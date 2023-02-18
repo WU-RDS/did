@@ -6782,34 +6782,34 @@ Estimation Method:  Doubly Robust</code></pre>
 </div>
 </div>
 </div>
-<div class="cell" data-hash="index_cache/html/unnamed-chunk-51_a56e447d3dbec7c70b7f4c8f7075923c">
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-51_af59d3613ff53c31565f314df3bfbca4">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a>model_ols <span class="ot">&lt;-</span> <span class="fu">feols</span>(</span>
-<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a>    y <span class="sc">~</span></span>
-<span id="cb113-3"><a href="#cb113-3" aria-hidden="true" tabindex="-1"></a>        is_unsw <span class="sc">+</span></span>
-<span id="cb113-4"><a href="#cb113-4" aria-hidden="true" tabindex="-1"></a>        is_dash <span class="sc">+</span></span>
-<span id="cb113-5"><a href="#cb113-5" aria-hidden="true" tabindex="-1"></a>        is_unsw <span class="sc">*</span> is_dash <span class="sc">+</span></span>
-<span id="cb113-6"><a href="#cb113-6" aria-hidden="true" tabindex="-1"></a>        is_post <span class="sc">+</span></span>
-<span id="cb113-7"><a href="#cb113-7" aria-hidden="true" tabindex="-1"></a>        is_unsw <span class="sc">*</span> is_post <span class="sc">+</span></span>
-<span id="cb113-8"><a href="#cb113-8" aria-hidden="true" tabindex="-1"></a>        is_dash <span class="sc">*</span> is_post <span class="sc">+</span></span>
-<span id="cb113-9"><a href="#cb113-9" aria-hidden="true" tabindex="-1"></a>        is_unsw <span class="sc">*</span> is_dash <span class="sc">*</span> is_post,</span>
-<span id="cb113-10"><a href="#cb113-10" aria-hidden="true" tabindex="-1"></a>    panel,</span>
-<span id="cb113-11"><a href="#cb113-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">cluster =</span> <span class="st">"id"</span></span>
-<span id="cb113-12"><a href="#cb113-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb113-13"><a href="#cb113-13" aria-hidden="true" tabindex="-1"></a>model_fe <span class="ot">&lt;-</span> <span class="fu">feols</span>(y <span class="sc">~</span></span>
-<span id="cb113-14"><a href="#cb113-14" aria-hidden="true" tabindex="-1"></a>    is_unsw<span class="sc">:</span>is_dash<span class="sc">:</span>is_post <span class="sc">|</span></span>
-<span id="cb113-15"><a href="#cb113-15" aria-hidden="true" tabindex="-1"></a>        id <span class="sc">+</span></span>
-<span id="cb113-16"><a href="#cb113-16" aria-hidden="true" tabindex="-1"></a>            is_post <span class="sc">+</span></span>
-<span id="cb113-17"><a href="#cb113-17" aria-hidden="true" tabindex="-1"></a>            is_unsw <span class="sc">*</span> is_post <span class="sc">+</span></span>
-<span id="cb113-18"><a href="#cb113-18" aria-hidden="true" tabindex="-1"></a>            is_dash <span class="sc">*</span> is_post, panel)</span>
+<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a>    y <span class="sc">~</span> is_unsw <span class="sc">+</span></span>
+<span id="cb113-3"><a href="#cb113-3" aria-hidden="true" tabindex="-1"></a>        is_dash <span class="sc">+</span></span>
+<span id="cb113-4"><a href="#cb113-4" aria-hidden="true" tabindex="-1"></a>        is_unsw <span class="sc">*</span> is_dash <span class="sc">+</span></span>
+<span id="cb113-5"><a href="#cb113-5" aria-hidden="true" tabindex="-1"></a>        is_post <span class="sc">+</span></span>
+<span id="cb113-6"><a href="#cb113-6" aria-hidden="true" tabindex="-1"></a>        is_unsw <span class="sc">*</span> is_post <span class="sc">+</span></span>
+<span id="cb113-7"><a href="#cb113-7" aria-hidden="true" tabindex="-1"></a>        is_dash <span class="sc">*</span> is_post <span class="sc">+</span></span>
+<span id="cb113-8"><a href="#cb113-8" aria-hidden="true" tabindex="-1"></a>        is_unsw <span class="sc">*</span> is_dash <span class="sc">*</span> is_post,</span>
+<span id="cb113-9"><a href="#cb113-9" aria-hidden="true" tabindex="-1"></a>    panel,</span>
+<span id="cb113-10"><a href="#cb113-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">cluster =</span> <span class="st">"id"</span></span>
+<span id="cb113-11"><a href="#cb113-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb113-12"><a href="#cb113-12" aria-hidden="true" tabindex="-1"></a>model_fe <span class="ot">&lt;-</span> <span class="fu">feols</span>(</span>
+<span id="cb113-13"><a href="#cb113-13" aria-hidden="true" tabindex="-1"></a>    y <span class="sc">~</span> is_unsw<span class="sc">:</span>is_dash<span class="sc">:</span>is_post <span class="sc">|</span></span>
+<span id="cb113-14"><a href="#cb113-14" aria-hidden="true" tabindex="-1"></a>        id <span class="sc">+</span></span>
+<span id="cb113-15"><a href="#cb113-15" aria-hidden="true" tabindex="-1"></a>        is_post <span class="sc">+</span></span>
+<span id="cb113-16"><a href="#cb113-16" aria-hidden="true" tabindex="-1"></a>        is_unsw <span class="sc">:</span> is_post <span class="sc">+</span></span>
+<span id="cb113-17"><a href="#cb113-17" aria-hidden="true" tabindex="-1"></a>        is_dash <span class="sc">:</span> is_post, </span>
+<span id="cb113-18"><a href="#cb113-18" aria-hidden="true" tabindex="-1"></a>    panel)</span>
 <span id="cb113-19"><a href="#cb113-19" aria-hidden="true" tabindex="-1"></a><span class="fu">etable</span>(model_ols, model_fe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":[""],"name":[1],"type":["chr"],"align":["left"]},{"label":["model_ols"],"name":[2],"type":["chr"],"align":["left"]},{"label":["model_fe"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"Dependent Var.:","2":"y","3":"y","_rn_":"1"},{"1":"","2":"","3":"","_rn_":"2"},{"1":"Constant","2":"9.997*** (0.0055)","3":"","_rn_":"3"},{"1":"is_unsw","2":"2.006*** (0.0078)","3":"","_rn_":"4"},{"1":"is_dash","2":"3.003*** (0.0078)","3":"","_rn_":"5"},{"1":"is_post","2":"-1.492*** (0.0078)","3":"","_rn_":"6"},{"1":"is_unsw x is_dash","2":"4.003*** (0.0111)","3":"","_rn_":"7"},{"1":"is_unsw x is_post","2":"1.988*** (0.0111)","3":"","_rn_":"8"},{"1":"is_dash x is_post","2":"-3.001*** (0.0111)","3":"","_rn_":"9"},{"1":"is_unsw x is_dash x is_post","2":"3.997*** (0.0157)","3":"3.997*** (0.0157)","_rn_":"10"},{"1":"Fixed-Effects:","2":"------------------","3":"-----------------","_rn_":"11"},{"1":"id","2":"No","3":"Yes","_rn_":"12"},{"1":"is_post","2":"No","3":"Yes","_rn_":"13"},{"1":"is_unsw","2":"No","3":"Yes","_rn_":"14"},{"1":"is_dash","2":"No","3":"Yes","_rn_":"15"},{"1":"is_post:is_unsw","2":"No","3":"Yes","_rn_":"16"},{"1":"is_post:is_dash","2":"No","3":"Yes","_rn_":"17"},{"1":"___________________________","2":"__________________","3":"_________________","_rn_":"18"},{"1":"S.E.: Clustered","2":"by: id","3":"by: id","_rn_":"19"},{"1":"Observations","2":"262,144","3":"262,144","_rn_":"20"},{"1":"R2","2":"0.94685","3":"0.97344","_rn_":"21"},{"1":"Within R2","2":"--","3":"0.33235","_rn_":"22"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":[""],"name":[1],"type":["chr"],"align":["left"]},{"label":["model_ols"],"name":[2],"type":["chr"],"align":["left"]},{"label":["model_fe"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"Dependent Var.:","2":"y","3":"y","_rn_":"1"},{"1":"","2":"","3":"","_rn_":"2"},{"1":"Constant","2":"9.997*** (0.0055)","3":"","_rn_":"3"},{"1":"is_unsw","2":"2.006*** (0.0078)","3":"","_rn_":"4"},{"1":"is_dash","2":"3.003*** (0.0078)","3":"","_rn_":"5"},{"1":"is_post","2":"-1.492*** (0.0078)","3":"","_rn_":"6"},{"1":"is_unsw x is_dash","2":"4.003*** (0.0111)","3":"","_rn_":"7"},{"1":"is_unsw x is_post","2":"1.988*** (0.0111)","3":"","_rn_":"8"},{"1":"is_dash x is_post","2":"-3.001*** (0.0111)","3":"","_rn_":"9"},{"1":"is_unsw x is_dash x is_post","2":"3.997*** (0.0157)","3":"3.997*** (0.0157)","_rn_":"10"},{"1":"Fixed-Effects:","2":"------------------","3":"-----------------","_rn_":"11"},{"1":"id","2":"No","3":"Yes","_rn_":"12"},{"1":"is_post","2":"No","3":"Yes","_rn_":"13"},{"1":"is_post:is_unsw","2":"No","3":"Yes","_rn_":"14"},{"1":"is_post:is_dash","2":"No","3":"Yes","_rn_":"15"},{"1":"___________________________","2":"__________________","3":"_________________","_rn_":"16"},{"1":"S.E.: Clustered","2":"by: id","3":"by: id","_rn_":"17"},{"1":"Observations","2":"262,144","3":"262,144","_rn_":"18"},{"1":"R2","2":"0.94685","3":"0.97344","_rn_":"19"},{"1":"Within R2","2":"--","3":"0.33235","_rn_":"20"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
