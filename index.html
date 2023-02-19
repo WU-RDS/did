@@ -160,16 +160,20 @@ div.csl-indent {
   <li><a href="#heterogeneity-across-groups" id="toc-heterogeneity-across-groups" class="nav-link" data-scroll-target="#heterogeneity-across-groups">Heterogeneity across groups</a></li>
   <li><a href="#heterogeneity-across-time" id="toc-heterogeneity-across-time" class="nav-link" data-scroll-target="#heterogeneity-across-time">Heterogeneity across time</a></li>
   </ul></li>
-  <li><a href="#matching-treated-and-control-units" id="toc-matching-treated-and-control-units" class="nav-link" data-scroll-target="#matching-treated-and-control-units">Matching treated and control units</a></li>
+  <li><a href="#matching-treated-and-control-units" id="toc-matching-treated-and-control-units" class="nav-link" data-scroll-target="#matching-treated-and-control-units">Matching treated and control units</a>
+  <ul class="collapse">
+  <li><a href="#assessing-weights-and-covariate-balance" id="toc-assessing-weights-and-covariate-balance" class="nav-link" data-scroll-target="#assessing-weights-and-covariate-balance">Assessing weights and covariate balance</a></li>
+  <li><a href="#estimation-using-weights" id="toc-estimation-using-weights" class="nav-link" data-scroll-target="#estimation-using-weights">Estimation using weights</a></li>
+  </ul></li>
   <li><a href="#synthetic-control" id="toc-synthetic-control" class="nav-link" data-scroll-target="#synthetic-control">Synthetic control</a></li>
   <li><a href="#synthetic-difference-in-differences" id="toc-synthetic-difference-in-differences" class="nav-link" data-scroll-target="#synthetic-difference-in-differences">Synthetic Difference-in-Differences</a></li>
   <li><a href="#time-varying-treatment-effects" id="toc-time-varying-treatment-effects" class="nav-link" data-scroll-target="#time-varying-treatment-effects">Time-varying treatment effects</a>
   <ul class="collapse">
   <li><a href="#staggered-adoption" id="toc-staggered-adoption" class="nav-link" data-scroll-target="#staggered-adoption">Staggered adoption</a></li>
-  <li><a href="#standard-diff-in-diff" id="toc-standard-diff-in-diff" class="nav-link" data-scroll-target="#standard-diff-in-diff">Standard Diff-in-Diff</a></li>
+  <li><a href="#comparison-to-two-way-fixed-effects" id="toc-comparison-to-two-way-fixed-effects" class="nav-link" data-scroll-target="#comparison-to-two-way-fixed-effects">Comparison to two-way Fixed Effects</a></li>
   </ul></li>
   </ul></li>
-  <li><a href="#difference-in-difference-in-difference" id="toc-difference-in-difference-in-difference" class="nav-link" data-scroll-target="#difference-in-difference-in-difference">Difference-in-Difference-in-Difference</a></li>
+  <li><a href="#difference-in-difference-in-differences" id="toc-difference-in-difference-in-differences" class="nav-link" data-scroll-target="#difference-in-difference-in-differences">Difference-in-Difference-in-Differences</a></li>
   <li><a href="#bayesian-structural-time-series-approach" id="toc-bayesian-structural-time-series-approach" class="nav-link" data-scroll-target="#bayesian-structural-time-series-approach">Bayesian structural time-series approach</a></li>
   </ul>
 </nav>
@@ -209,6 +213,7 @@ div.csl-indent {
 
 <section id="preliminaries" class="level1">
 <h1>Preliminaries</h1>
+<p>This tutorial uses the R statistical software <span class="citation" data-cites="r_r">(<a href="#ref-r_r" role="doc-biblioref">R Core Team 2022</a>)</span> and assumes you have a recent version with the standard packages loaded (this is the case in a fresh installation without modifications).</p>
 <div class="cell">
 
 </div>
@@ -252,6 +257,7 @@ div.csl-indent {
 </div>
 <section id="baseline-model" class="level2">
 <h2 class="anchored" data-anchor-id="baseline-model">Baseline model</h2>
+<p>Estimation of different specifications of a linear model using OLS (without fixed effects). The <code>lm</code> command for OLS estimation is available in your R session by default.</p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-3_e4673887c00b39e8ef959a9d68c098ba">
 <details>
 <summary>Code</summary>
@@ -4395,6 +4401,7 @@ F Statistic
 </section>
 <section id="fixed-effects-model" class="level2">
 <h2 class="anchored" data-anchor-id="fixed-effects-model">Fixed Effects model</h2>
+<p>Estimation of a linear model with song and song-time fixed effects using the <code>fixest</code> <span class="citation" data-cites="pkg_fixest">(<a href="#ref-pkg_fixest" role="doc-biblioref">Bergé 2018</a>)</span> package. Note that this package also implements the estimator proposed by <span class="citation" data-cites="sunEstimatingDynamicTreatment2020">Sun and Abraham (<a href="#ref-sunEstimatingDynamicTreatment2020" role="doc-biblioref">2020</a>)</span> for staggered adoption (see <code>?sunab</code>).</p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-4_0d477157b6cfd1fd97ba94a278738639">
 <details>
 <summary>Code</summary>
@@ -4455,6 +4462,20 @@ COEFFICIENTS:
 </section>
 <section id="mixed-effects-model" class="level2">
 <h2 class="anchored" data-anchor-id="mixed-effects-model">Mixed Effects model</h2>
+<div class="callout-caution callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Danger
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The term Fixed Effects is not used consistently in the literature. Here we view fixed effects as unit level constants (R packages: <code>fixest</code>, <code>lfe</code>, or <code>alpaca</code>). If you find the term “fixed effects” in the context of “mixed effects models” or “random effects models” (in R when the <code>lme4</code> package is used) it refers to coefficients that are fixed across units.</p>
+</div>
+</div>
+<p>Estimation of mixed effects model using <code>lme4</code>. This allows explicitly modelling heterogeneity of intercept and slopes across units.</p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-5_6a377987745559ac4c4620cebbc45e52">
 <details>
 <summary>Code</summary>
@@ -4527,6 +4548,7 @@ lg(wks__+1) -0.076  0.382   0.043   0.000</code></pre>
 <h1>Difference-in-Differences estimator</h1>
 <section id="canonical-diff-in-diff" class="level2">
 <h2 class="anchored" data-anchor-id="canonical-diff-in-diff">“Canonical” Diff-in-Diff</h2>
+<p>Data preparation using the <code>data.table</code> and <code>dplyr</code> packages.</p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-6_354c99daac60428fdedf799ce3d3e0ab">
 <details>
 <summary>Code</summary>
@@ -4994,6 +5016,7 @@ lg(wks__+1) -0.076  0.382   0.043   0.000</code></pre>
 </div>
 </div>
 </div>
+<p>Visualization of the panel structure using the <code>panelView</code> package.</p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-8_e30d3111e7361b356f3263e2f2d59289">
 <details>
 <summary>Code</summary>
@@ -5048,6 +5071,7 @@ lg(wks__+1) -0.076  0.382   0.043   0.000</code></pre>
 <p><img src="index_files/figure-html/unnamed-chunk-8-3.png" class="img-fluid" width="768"></p>
 </div>
 </div>
+<p>Visualization of the outcome variable by treatment group using the <code>ggplot2</code> package.</p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-9_1a3d7f0ff6c2d1ce9d05d5f5f1d36d43">
 <details>
 <summary>Code</summary>
@@ -5113,6 +5137,7 @@ lg(wks__+1) -0.076  0.382   0.043   0.000</code></pre>
 </div>
 <section id="baseline-model-1" class="level3">
 <h3 class="anchored" data-anchor-id="baseline-model-1">Baseline model</h3>
+<p>Estimation of the baseline model using dummy-variables for the post-treatment period (<span class="math inline">\(1\)</span> for all units in the post-treatment period) and the treatment group (always <span class="math inline">\(1\)</span> for units that are eventually treated) as well as their interaction. The coefficient of the latter is the difference-in-differences estimator of the treatment effect.</p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-10_854f7d9059f137814a533886f0d248af">
 <details>
 <summary>Code</summary>
@@ -5298,6 +5323,7 @@ F Statistic
 </section>
 <section id="two-way-fixed-effects-model" class="level3">
 <h3 class="anchored" data-anchor-id="two-way-fixed-effects-model">Two-Way Fixed Effects model</h3>
+<p>Alternative estimation of the same difference-in-differences parameter as above using unit-time fixed effects (<code>fixest</code>).</p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-11_29c1f37a6542edb20c2478a4db6c8acc">
 <details>
 <summary>Code</summary>
@@ -5322,7 +5348,7 @@ F Statistic
 </section>
 <section id="the-did-package" class="level3">
 <h3 class="anchored" data-anchor-id="the-did-package">The <code>did</code> package</h3>
-<p><span class="citation" data-cites="pkg_did">Callaway and Sant’Anna (<a href="#ref-pkg_did" role="doc-biblioref">2021</a>)</span></p>
+<p>One of the most useful packages for the estimation of difference-in-differences with staggered adoption is <code>did</code> <span class="citation" data-cites="pkg_did">(<a href="#ref-pkg_did" role="doc-biblioref">Callaway and Sant’Anna 2021a</a>)</span>. However the approach proposed by <span class="citation" data-cites="callawayDifferenceinDifferencesMultipleTime2021">Callaway and Sant’Anna (<a href="#ref-callawayDifferenceinDifferencesMultipleTime2021" role="doc-biblioref">2021b</a>)</span> also naturally extends to comparison of the canonical diff-in-diffs specification. First, group-time ATTs are calculated (in their paper group refers to adoption cohort). Second, the ATTs are aggregated using a group-size weighted average. Inference for this aggregate is implemented in the package.</p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-12_e8e3bb65e390403868a742ea131f8200">
 <details>
 <summary>Code</summary>
@@ -5371,6 +5397,7 @@ Estimation Method:  Doubly Robust</code></pre>
 <h2 class="anchored" data-anchor-id="parallel-trends-assessment">Parallel trends assessment</h2>
 <section id="period-specific-effects" class="level3">
 <h3 class="anchored" data-anchor-id="period-specific-effects">Period-specific effects</h3>
+<p>Conduct leads &amp; lags analysis to assess “pre-trends” using <code>fixest</code>. <span class="math inline">\(H_0\)</span> should not be rejected pre-treatment.</p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-13_e89de10629be66fe7dc76c014a45071c">
 <details>
 <summary>Code</summary>
@@ -5403,7 +5430,7 @@ Estimation Method:  Doubly Robust</code></pre>
 <p><img src="index_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
-<p>Wald test for pre-treatment trends using <span class="citation" data-cites="pkg_did">Callaway and Sant’Anna (<a href="#ref-pkg_did" role="doc-biblioref">2021</a>)</span></p>
+<p><code>did</code> provides a Wald test for pre-treatment trends.</p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-14_ee6d754ef438683ee8a5e36323c797ba">
 <details>
 <summary>Code</summary>
@@ -5485,7 +5512,7 @@ Estimation Method:  Doubly Robust</code></pre>
 </section>
 <section id="sensitivity-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="sensitivity-analysis">Sensitivity analysis</h3>
-<p>Using <span class="citation" data-cites="rambachanMoreCredibleApproach2023">Rambachan and Roth (<a href="#ref-rambachanMoreCredibleApproach2023" role="doc-biblioref">2023</a>)</span></p>
+<p><span class="citation" data-cites="rambachanMoreCredibleApproach2023">Rambachan and Roth (<a href="#ref-rambachanMoreCredibleApproach2023" role="doc-biblioref">2023</a>)</span> propose (among other things) to test the robustness of the results to violations of the parallel trends in the post-treatment period relative to the pre-treatment period. We can check statistical significance of causale parameters if we impose that the post-treatment violation of parallel trends is not more than <span class="math inline">\(\bar M\)</span> longer than the worst pre-treatment violation of parallel trends for different values of <span class="math inline">\(\bar M\)</span>.</p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-16_6aa8a40f84fbbbbb2e890f61c193c76c">
 <details>
 <summary>Code</summary>
@@ -5516,6 +5543,7 @@ Estimation Method:  Doubly Robust</code></pre>
 </section>
 <section id="conditional-parallel-trends" class="level3">
 <h3 class="anchored" data-anchor-id="conditional-parallel-trends">Conditional parallel trends</h3>
+<p>Using <code>did</code> we can also estimate a model in which the trends are only parallel conditional on covariates by specifying the <code>xformla</code> argument.</p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-17_f45571975fe5b265cfad70e5c0310141">
 <details>
 <summary>Code</summary>
@@ -5604,6 +5632,7 @@ Estimation Method:  Doubly Robust</code></pre>
 <h2 class="anchored" data-anchor-id="heterogeneous-treatment-effects">Heterogeneous treatment effects</h2>
 <section id="heterogeneity-across-groups" class="level3">
 <h3 class="anchored" data-anchor-id="heterogeneity-across-groups">Heterogeneity across groups</h3>
+<p>Estimation of treatment effect heterogeneity across genres using <code>fixest</code>.</p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-18_1b9711bbda7be2dd9b461eba448d2fc5">
 <details>
 <summary>Code</summary>
@@ -5629,6 +5658,7 @@ Estimation Method:  Doubly Robust</code></pre>
 </section>
 <section id="heterogeneity-across-time" class="level3">
 <h3 class="anchored" data-anchor-id="heterogeneity-across-time">Heterogeneity across time</h3>
+<p>Estimation of different treatment effects for multiple post-treatment periods using <code>fixest</code>.</p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-19_752c293f72a5274ea818adcfe44ffdb3">
 <details>
 <summary>Code</summary>
@@ -5653,6 +5683,7 @@ Estimation Method:  Doubly Robust</code></pre>
 </div>
 </div>
 </div>
+<p>Again, the aggregation scheme in <code>did</code> can be used to get an equivalent estimator using the methodology proposed in <span class="citation" data-cites="callawayDifferenceinDifferencesMultipleTime2021">Callaway and Sant’Anna (<a href="#ref-callawayDifferenceinDifferencesMultipleTime2021" role="doc-biblioref">2021b</a>)</span>.</p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-20_58f6c3dbda507c9f9f07452991461630">
 <details>
 <summary>Code</summary>
@@ -5707,6 +5738,7 @@ Estimation Method:  Doubly Robust</code></pre>
 </section>
 <section id="matching-treated-and-control-units" class="level2">
 <h2 class="anchored" data-anchor-id="matching-treated-and-control-units">Matching treated and control units</h2>
+<p>Ensuring covariate similarity using weighting (<code>WeightIt</code> package).</p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-21_9fbb8aa38c00b913cef357fd96dc0f1f">
 <details>
 <summary>Code</summary>
@@ -5791,6 +5823,8 @@ AIC: NA
 Number of Fisher Scoring iterations: 5</code></pre>
 </div>
 </div>
+<section id="assessing-weights-and-covariate-balance" class="level3">
+<h3 class="anchored" data-anchor-id="assessing-weights-and-covariate-balance">Assessing weights and covariate balance</h3>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-22_9a5a66391cd632e3e05bd7f562b7c4fb">
 <details>
 <summary>Code</summary>
@@ -5890,6 +5924,10 @@ Adjusted     140.4      53</code></pre>
 <p><img src="index_files/figure-html/unnamed-chunk-23-2.png" class="img-fluid" width="768"></p>
 </div>
 </div>
+</section>
+<section id="estimation-using-weights" class="level3">
+<h3 class="anchored" data-anchor-id="estimation-using-weights">Estimation using weights</h3>
+<p>The weights calculated in the previous step can be passed to the <code>fixest</code> package.</p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-24_6a0d77a1ea39c6de431c348fcdd144f9">
 <details>
 <summary>Code</summary>
@@ -5918,8 +5956,10 @@ Adjusted     140.4      53</code></pre>
 </div>
 </div>
 </section>
+</section>
 <section id="synthetic-control" class="level2">
 <h2 class="anchored" data-anchor-id="synthetic-control">Synthetic control</h2>
+<p>Estimation using generalized synthetic controls <span class="citation" data-cites="pkg_gsynth">(<code>gsynth</code> package <a href="#ref-pkg_gsynth" role="doc-biblioref">Xu and Liu 2021</a>)</span>) to ensure similarity between treated and control units.</p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-25_40d4daf6bb22fe3604c796537d9730b4">
 <details>
 <summary>Code</summary>
@@ -6111,6 +6151,7 @@ ATT.avg 0.335992 0.1190547 0.102649 0.569335 0.004770071</code></pre>
 </section>
 <section id="synthetic-difference-in-differences" class="level2">
 <h2 class="anchored" data-anchor-id="synthetic-difference-in-differences">Synthetic Difference-in-Differences</h2>
+<p>Estimation using synthetic difference-in-differences proposed by <span class="citation" data-cites="arkhangelskySyntheticDifferenceinDifferences2021">Arkhangelsky et al. (<a href="#ref-arkhangelskySyntheticDifferenceinDifferences2021" role="doc-biblioref">2021</a>)</span> and implemented in the <code>synthdid</code> package <span class="citation" data-cites="pkg_synthdid">(<a href="#ref-pkg_synthdid" role="doc-biblioref">Arkhangelsky 2023</a>)</span>.</p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-31_2777628ba2853655cb858f0b34ecfdd6">
 <details>
 <summary>Code</summary>
@@ -6153,6 +6194,7 @@ ATT.avg 0.335992 0.1190547 0.102649 0.569335 0.004770071</code></pre>
 <pre><code>[1] "95% CI (0.21, 0.32)"</code></pre>
 </div>
 </div>
+<p><strong>Visualizing the results</strong></p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-34_e862fbc288f2842de67333c02b4797ef">
 <details>
 <summary>Code</summary>
@@ -6200,8 +6242,7 @@ ATT.avg 0.335992 0.1190547 0.102649 0.569335 0.004770071</code></pre>
 <h2 class="anchored" data-anchor-id="time-varying-treatment-effects">Time-varying treatment effects</h2>
 <section id="staggered-adoption" class="level3">
 <h3 class="anchored" data-anchor-id="staggered-adoption">Staggered adoption</h3>
-<section id="synthetic-control-1" class="level4">
-<h4 class="anchored" data-anchor-id="synthetic-control-1">Synthetic control</h4>
+<p>Visualization of the panel structure using <code>panelView</code>.</p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-37_1016821e043d5d654b96fb0876232b07">
 <details>
 <summary>Code</summary>
@@ -6240,6 +6281,10 @@ ATT.avg 0.335992 0.1190547 0.102649 0.569335 0.004770071</code></pre>
 <p><img src="index_files/figure-html/unnamed-chunk-37-3.png" class="img-fluid" width="768"></p>
 </div>
 </div>
+<p>Multiple packages implement estimators appropriate for staggered adoption. Among them are <code>gsynth</code>, <code>did</code>, and <code>fixest</code> (latter not shown here, see <code>?sunab</code>). There is also <a href="https://github.com/zachporreca/staggered_adoption_synthdid">forthcoming package to extend <code>synthdid</code>.</a></p>
+<section id="synthetic-control-1" class="level4">
+<h4 class="anchored" data-anchor-id="synthetic-control-1">Synthetic control</h4>
+<p>Estimation using <code>gsynth</code>.</p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-38_26e9d2980914af72a64ab1f2556917ac">
 <details>
 <summary>Code</summary>
@@ -6474,6 +6519,7 @@ log_n_postings         0.012062783443</code></pre>
 </section>
 <section id="staggered-difference-in-differences" class="level4">
 <h4 class="anchored" data-anchor-id="staggered-difference-in-differences">Staggered Difference-in-Differences</h4>
+<p>Estimation using <code>did</code>.</p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-44_ef9de8ec2884e64d3f0417c3de07dba0">
 <details>
 <summary>Code</summary>
@@ -6711,8 +6757,9 @@ Estimation Method:  Doubly Robust</code></pre>
 </div>
 </section>
 </section>
-<section id="standard-diff-in-diff" class="level3">
-<h3 class="anchored" data-anchor-id="standard-diff-in-diff">Standard Diff-in-Diff</h3>
+<section id="comparison-to-two-way-fixed-effects" class="level3">
+<h3 class="anchored" data-anchor-id="comparison-to-two-way-fixed-effects">Comparison to two-way Fixed Effects</h3>
+<p>The TWFE estimator overestimates the treatment effect in this case</p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-49_47167b0952bbd76e5f1305166f4f8637">
 <details>
 <summary>Code</summary>
@@ -6734,44 +6781,69 @@ Estimation Method:  Doubly Robust</code></pre>
 </div>
 </div>
 </div>
-</section>
-</section>
-</section>
-<section id="difference-in-difference-in-difference" class="level1">
-<h1>Difference-in-Difference-in-Difference</h1>
-<div class="cell" data-hash="index_cache/html/unnamed-chunk-50_da1443ccb10e3dbc2c0db8b15036a7fb">
+<p>Compared to <span class="citation" data-cites="callawayDifferenceinDifferencesMultipleTime2021">Callaway and Sant’Anna (<a href="#ref-callawayDifferenceinDifferencesMultipleTime2021" role="doc-biblioref">2021b</a>)</span>:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-50_1f2b303165d14d8e72b1a42962414264">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a>is_unsw <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb112-3"><a href="#cb112-3" aria-hidden="true" tabindex="-1"></a>is_dash <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb112-4"><a href="#cb112-4" aria-hidden="true" tabindex="-1"></a>groups <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">is_unsw =</span> is_unsw, <span class="at">is_dash =</span> is_dash)</span>
-<span id="cb112-5"><a href="#cb112-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>) {</span>
-<span id="cb112-6"><a href="#cb112-6" aria-hidden="true" tabindex="-1"></a>    groups <span class="ot">&lt;-</span> <span class="fu">rbind</span>(groups, groups)</span>
-<span id="cb112-7"><a href="#cb112-7" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb112-8"><a href="#cb112-8" aria-hidden="true" tabindex="-1"></a>groups_pre <span class="ot">&lt;-</span> groups <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">seq_len</span>(<span class="fu">n</span>()), <span class="at">is_post =</span> <span class="dv">0</span>)</span>
-<span id="cb112-9"><a href="#cb112-9" aria-hidden="true" tabindex="-1"></a>groups_post <span class="ot">&lt;-</span> groups_pre <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">is_post =</span> <span class="dv">1</span>)</span>
-<span id="cb112-10"><a href="#cb112-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb112-11"><a href="#cb112-11" aria-hidden="true" tabindex="-1"></a>groups_df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(groups_pre, groups_post)</span>
-<span id="cb112-12"><a href="#cb112-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb112-13"><a href="#cb112-13" aria-hidden="true" tabindex="-1"></a>sample_y <span class="ot">&lt;-</span> <span class="cf">function</span>(df) {</span>
-<span id="cb112-14"><a href="#cb112-14" aria-hidden="true" tabindex="-1"></a>    is_unsw <span class="ot">&lt;-</span> df<span class="sc">$</span>is_unsw</span>
-<span id="cb112-15"><a href="#cb112-15" aria-hidden="true" tabindex="-1"></a>    is_dash <span class="ot">&lt;-</span> df<span class="sc">$</span>is_dash</span>
-<span id="cb112-16"><a href="#cb112-16" aria-hidden="true" tabindex="-1"></a>    is_post <span class="ot">&lt;-</span> df<span class="sc">$</span>is_post</span>
-<span id="cb112-17"><a href="#cb112-17" aria-hidden="true" tabindex="-1"></a>    df<span class="sc">$</span>y <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="sc">+</span></span>
-<span id="cb112-18"><a href="#cb112-18" aria-hidden="true" tabindex="-1"></a>        <span class="dv">2</span> <span class="sc">*</span> is_unsw <span class="sc">+</span></span>
-<span id="cb112-19"><a href="#cb112-19" aria-hidden="true" tabindex="-1"></a>        <span class="dv">3</span> <span class="sc">*</span> is_dash <span class="sc">+</span></span>
-<span id="cb112-20"><a href="#cb112-20" aria-hidden="true" tabindex="-1"></a>        <span class="dv">4</span> <span class="sc">*</span> is_unsw <span class="sc">*</span> is_dash <span class="sc">+</span></span>
-<span id="cb112-21"><a href="#cb112-21" aria-hidden="true" tabindex="-1"></a>        <span class="sc">-</span><span class="fl">1.5</span> <span class="sc">*</span> is_post <span class="sc">+</span></span>
-<span id="cb112-22"><a href="#cb112-22" aria-hidden="true" tabindex="-1"></a>        <span class="dv">2</span> <span class="sc">*</span> is_unsw <span class="sc">*</span> is_post <span class="sc">+</span></span>
-<span id="cb112-23"><a href="#cb112-23" aria-hidden="true" tabindex="-1"></a>        <span class="sc">-</span><span class="dv">3</span> <span class="sc">*</span> is_dash <span class="sc">*</span> is_post <span class="sc">+</span></span>
-<span id="cb112-24"><a href="#cb112-24" aria-hidden="true" tabindex="-1"></a>        <span class="dv">4</span> <span class="sc">*</span> is_unsw <span class="sc">*</span> is_dash <span class="sc">*</span> is_post <span class="sc">+</span> <span class="co"># &lt;- treated with delta = 4</span></span>
-<span id="cb112-25"><a href="#cb112-25" aria-hidden="true" tabindex="-1"></a>        <span class="fu">rnorm</span>(<span class="fu">nrow</span>(df), <span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb112-26"><a href="#cb112-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(df)</span>
-<span id="cb112-27"><a href="#cb112-27" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb112-28"><a href="#cb112-28" aria-hidden="true" tabindex="-1"></a>panel <span class="ot">&lt;-</span> <span class="fu">sample_y</span>(groups_df)</span>
-<span id="cb112-29"><a href="#cb112-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb112-30"><a href="#cb112-30" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(panel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aggte</span>(did_stag, <span class="at">type =</span> <span class="st">"simple"</span>, <span class="at">biters =</span> <span class="dv">20000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+aggte(MP = did_stag, type = "simple", biters = 20000)
+
+Reference: Callaway, Brantly and Pedro H.C. Sant'Anna.  "Difference-in-Differences with Multiple Time Periods." Journal of Econometrics, Vol. 225, No. 2, pp. 200-230, 2021. &lt;https://doi.org/10.1016/j.jeconom.2020.12.001&gt;, &lt;https://arxiv.org/abs/1803.09015&gt; 
+
+    ATT    Std. Error     [ 95%  Conf. Int.]  
+ 0.3398         0.097     0.1497      0.5299 *
+
+
+---
+Signif. codes: `*' confidence band does not cover 0
+
+Control Group:  Never Treated,  Anticipation Periods:  0
+Estimation Method:  Doubly Robust</code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="difference-in-difference-in-differences" class="level1">
+<h1>Difference-in-Difference-in-Differences</h1>
+<p>In addition, to a canonical diff-in-diffs it adds a “counterfactual” diff-in-diff of groups similar to the original treated and control group in a unit (e.g., region) neither of them is treated.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-51_83b012a03ddb094963536f749b655780">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a>is_unsw <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb114-3"><a href="#cb114-3" aria-hidden="true" tabindex="-1"></a>is_dash <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb114-4"><a href="#cb114-4" aria-hidden="true" tabindex="-1"></a>groups <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">is_unsw =</span> is_unsw, <span class="at">is_dash =</span> is_dash)</span>
+<span id="cb114-5"><a href="#cb114-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>) {</span>
+<span id="cb114-6"><a href="#cb114-6" aria-hidden="true" tabindex="-1"></a>    groups <span class="ot">&lt;-</span> <span class="fu">rbind</span>(groups, groups)</span>
+<span id="cb114-7"><a href="#cb114-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb114-8"><a href="#cb114-8" aria-hidden="true" tabindex="-1"></a>groups_pre <span class="ot">&lt;-</span> groups <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">seq_len</span>(<span class="fu">n</span>()), <span class="at">is_post =</span> <span class="dv">0</span>)</span>
+<span id="cb114-9"><a href="#cb114-9" aria-hidden="true" tabindex="-1"></a>groups_post <span class="ot">&lt;-</span> groups_pre <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">is_post =</span> <span class="dv">1</span>)</span>
+<span id="cb114-10"><a href="#cb114-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-11"><a href="#cb114-11" aria-hidden="true" tabindex="-1"></a>groups_df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(groups_pre, groups_post)</span>
+<span id="cb114-12"><a href="#cb114-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-13"><a href="#cb114-13" aria-hidden="true" tabindex="-1"></a>sample_y <span class="ot">&lt;-</span> <span class="cf">function</span>(df) {</span>
+<span id="cb114-14"><a href="#cb114-14" aria-hidden="true" tabindex="-1"></a>    is_unsw <span class="ot">&lt;-</span> df<span class="sc">$</span>is_unsw</span>
+<span id="cb114-15"><a href="#cb114-15" aria-hidden="true" tabindex="-1"></a>    is_dash <span class="ot">&lt;-</span> df<span class="sc">$</span>is_dash</span>
+<span id="cb114-16"><a href="#cb114-16" aria-hidden="true" tabindex="-1"></a>    is_post <span class="ot">&lt;-</span> df<span class="sc">$</span>is_post</span>
+<span id="cb114-17"><a href="#cb114-17" aria-hidden="true" tabindex="-1"></a>    df<span class="sc">$</span>y <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="sc">+</span></span>
+<span id="cb114-18"><a href="#cb114-18" aria-hidden="true" tabindex="-1"></a>        <span class="dv">2</span> <span class="sc">*</span> is_unsw <span class="sc">+</span></span>
+<span id="cb114-19"><a href="#cb114-19" aria-hidden="true" tabindex="-1"></a>        <span class="dv">3</span> <span class="sc">*</span> is_dash <span class="sc">+</span></span>
+<span id="cb114-20"><a href="#cb114-20" aria-hidden="true" tabindex="-1"></a>        <span class="dv">4</span> <span class="sc">*</span> is_unsw <span class="sc">*</span> is_dash <span class="sc">+</span></span>
+<span id="cb114-21"><a href="#cb114-21" aria-hidden="true" tabindex="-1"></a>        <span class="sc">-</span><span class="fl">1.5</span> <span class="sc">*</span> is_post <span class="sc">+</span></span>
+<span id="cb114-22"><a href="#cb114-22" aria-hidden="true" tabindex="-1"></a>        <span class="dv">2</span> <span class="sc">*</span> is_unsw <span class="sc">*</span> is_post <span class="sc">+</span></span>
+<span id="cb114-23"><a href="#cb114-23" aria-hidden="true" tabindex="-1"></a>        <span class="sc">-</span><span class="dv">3</span> <span class="sc">*</span> is_dash <span class="sc">*</span> is_post <span class="sc">+</span></span>
+<span id="cb114-24"><a href="#cb114-24" aria-hidden="true" tabindex="-1"></a>        <span class="dv">4</span> <span class="sc">*</span> is_unsw <span class="sc">*</span> is_dash <span class="sc">*</span> is_post <span class="sc">+</span> <span class="co"># &lt;- treated with delta = 4</span></span>
+<span id="cb114-25"><a href="#cb114-25" aria-hidden="true" tabindex="-1"></a>        <span class="fu">rnorm</span>(<span class="fu">nrow</span>(df), <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb114-26"><a href="#cb114-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(df)</span>
+<span id="cb114-27"><a href="#cb114-27" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb114-28"><a href="#cb114-28" aria-hidden="true" tabindex="-1"></a>panel <span class="ot">&lt;-</span> <span class="fu">sample_y</span>(groups_df)</span>
+<span id="cb114-29"><a href="#cb114-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-30"><a href="#cb114-30" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(panel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 
@@ -6782,28 +6854,30 @@ Estimation Method:  Doubly Robust</code></pre>
 </div>
 </div>
 </div>
-<div class="cell" data-hash="index_cache/html/unnamed-chunk-51_af59d3613ff53c31565f314df3bfbca4">
+<p>Estimation of a difference-in-difference-in-differences model using <code>fixest</code>.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-52_092f2696a3443dffd455fc22060e2da7">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a>model_ols <span class="ot">&lt;-</span> <span class="fu">feols</span>(</span>
-<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a>    y <span class="sc">~</span> is_unsw <span class="sc">+</span></span>
-<span id="cb113-3"><a href="#cb113-3" aria-hidden="true" tabindex="-1"></a>        is_dash <span class="sc">+</span></span>
-<span id="cb113-4"><a href="#cb113-4" aria-hidden="true" tabindex="-1"></a>        is_unsw <span class="sc">*</span> is_dash <span class="sc">+</span></span>
-<span id="cb113-5"><a href="#cb113-5" aria-hidden="true" tabindex="-1"></a>        is_post <span class="sc">+</span></span>
-<span id="cb113-6"><a href="#cb113-6" aria-hidden="true" tabindex="-1"></a>        is_unsw <span class="sc">*</span> is_post <span class="sc">+</span></span>
-<span id="cb113-7"><a href="#cb113-7" aria-hidden="true" tabindex="-1"></a>        is_dash <span class="sc">*</span> is_post <span class="sc">+</span></span>
-<span id="cb113-8"><a href="#cb113-8" aria-hidden="true" tabindex="-1"></a>        is_unsw <span class="sc">*</span> is_dash <span class="sc">*</span> is_post,</span>
-<span id="cb113-9"><a href="#cb113-9" aria-hidden="true" tabindex="-1"></a>    panel,</span>
-<span id="cb113-10"><a href="#cb113-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">cluster =</span> <span class="st">"id"</span></span>
-<span id="cb113-11"><a href="#cb113-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb113-12"><a href="#cb113-12" aria-hidden="true" tabindex="-1"></a>model_fe <span class="ot">&lt;-</span> <span class="fu">feols</span>(</span>
-<span id="cb113-13"><a href="#cb113-13" aria-hidden="true" tabindex="-1"></a>    y <span class="sc">~</span> is_unsw<span class="sc">:</span>is_dash<span class="sc">:</span>is_post <span class="sc">|</span></span>
-<span id="cb113-14"><a href="#cb113-14" aria-hidden="true" tabindex="-1"></a>        id <span class="sc">+</span></span>
-<span id="cb113-15"><a href="#cb113-15" aria-hidden="true" tabindex="-1"></a>        is_post <span class="sc">+</span></span>
-<span id="cb113-16"><a href="#cb113-16" aria-hidden="true" tabindex="-1"></a>        is_unsw <span class="sc">:</span> is_post <span class="sc">+</span></span>
-<span id="cb113-17"><a href="#cb113-17" aria-hidden="true" tabindex="-1"></a>        is_dash <span class="sc">:</span> is_post, </span>
-<span id="cb113-18"><a href="#cb113-18" aria-hidden="true" tabindex="-1"></a>    panel)</span>
-<span id="cb113-19"><a href="#cb113-19" aria-hidden="true" tabindex="-1"></a><span class="fu">etable</span>(model_ols, model_fe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a>model_ols <span class="ot">&lt;-</span> <span class="fu">feols</span>(</span>
+<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a>    y <span class="sc">~</span> is_unsw <span class="sc">+</span></span>
+<span id="cb115-3"><a href="#cb115-3" aria-hidden="true" tabindex="-1"></a>        is_dash <span class="sc">+</span></span>
+<span id="cb115-4"><a href="#cb115-4" aria-hidden="true" tabindex="-1"></a>        is_unsw <span class="sc">*</span> is_dash <span class="sc">+</span></span>
+<span id="cb115-5"><a href="#cb115-5" aria-hidden="true" tabindex="-1"></a>        is_post <span class="sc">+</span></span>
+<span id="cb115-6"><a href="#cb115-6" aria-hidden="true" tabindex="-1"></a>        is_unsw <span class="sc">*</span> is_post <span class="sc">+</span></span>
+<span id="cb115-7"><a href="#cb115-7" aria-hidden="true" tabindex="-1"></a>        is_dash <span class="sc">*</span> is_post <span class="sc">+</span></span>
+<span id="cb115-8"><a href="#cb115-8" aria-hidden="true" tabindex="-1"></a>        is_unsw <span class="sc">*</span> is_dash <span class="sc">*</span> is_post,</span>
+<span id="cb115-9"><a href="#cb115-9" aria-hidden="true" tabindex="-1"></a>    panel,</span>
+<span id="cb115-10"><a href="#cb115-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">cluster =</span> <span class="st">"id"</span></span>
+<span id="cb115-11"><a href="#cb115-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb115-12"><a href="#cb115-12" aria-hidden="true" tabindex="-1"></a>model_fe <span class="ot">&lt;-</span> <span class="fu">feols</span>(</span>
+<span id="cb115-13"><a href="#cb115-13" aria-hidden="true" tabindex="-1"></a>    y <span class="sc">~</span> is_unsw<span class="sc">:</span>is_dash<span class="sc">:</span>is_post <span class="sc">|</span></span>
+<span id="cb115-14"><a href="#cb115-14" aria-hidden="true" tabindex="-1"></a>        id <span class="sc">+</span></span>
+<span id="cb115-15"><a href="#cb115-15" aria-hidden="true" tabindex="-1"></a>            is_post <span class="sc">+</span></span>
+<span id="cb115-16"><a href="#cb115-16" aria-hidden="true" tabindex="-1"></a>            is_unsw<span class="sc">:</span>is_post <span class="sc">+</span></span>
+<span id="cb115-17"><a href="#cb115-17" aria-hidden="true" tabindex="-1"></a>            is_dash<span class="sc">:</span>is_post,</span>
+<span id="cb115-18"><a href="#cb115-18" aria-hidden="true" tabindex="-1"></a>    panel</span>
+<span id="cb115-19"><a href="#cb115-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb115-20"><a href="#cb115-20" aria-hidden="true" tabindex="-1"></a><span class="fu">etable</span>(model_ols, model_fe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 
@@ -6815,25 +6889,25 @@ Estimation Method:  Doubly Robust</code></pre>
 </div>
 </div>
 <p><strong>Interpretation as Difference between two Diff-in-Diff models</strong></p>
-<div class="cell" data-hash="index_cache/html/unnamed-chunk-52_497914134c84297a42a93b45e4081008">
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-53_c2c54781a307c4a17f080bb9e028a174">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a>means <span class="ot">&lt;-</span> panel <span class="sc">|&gt;</span></span>
-<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(is_unsw, is_dash, is_post) <span class="sc">|&gt;</span></span>
-<span id="cb114-3"><a href="#cb114-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">y =</span> <span class="fu">mean</span>(y)) <span class="sc">|&gt;</span></span>
-<span id="cb114-4"><a href="#cb114-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(is_post)</span>
-<span id="cb114-5"><a href="#cb114-5" aria-hidden="true" tabindex="-1"></a>diffs <span class="ot">&lt;-</span> means <span class="sc">|&gt;</span></span>
-<span id="cb114-6"><a href="#cb114-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(is_unsw, is_dash) <span class="sc">|&gt;</span></span>
-<span id="cb114-7"><a href="#cb114-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">y =</span> <span class="fu">diff</span>(y))</span>
-<span id="cb114-8"><a href="#cb114-8" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(</span>
-<span id="cb114-9"><a href="#cb114-9" aria-hidden="true" tabindex="-1"></a>    diffs,</span>
-<span id="cb114-10"><a href="#cb114-10" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Diff-in-Diff for UNSW</span></span>
-<span id="cb114-11"><a href="#cb114-11" aria-hidden="true" tabindex="-1"></a>    y[is_unsw <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> is_dash <span class="sc">==</span> <span class="dv">1</span>] <span class="sc">-</span></span>
-<span id="cb114-12"><a href="#cb114-12" aria-hidden="true" tabindex="-1"></a>        y[is_unsw <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> is_dash <span class="sc">==</span> <span class="dv">0</span>] <span class="sc">-</span></span>
-<span id="cb114-13"><a href="#cb114-13" aria-hidden="true" tabindex="-1"></a>        <span class="do">## Counterfactual Diff-in-Diff for WU</span></span>
-<span id="cb114-14"><a href="#cb114-14" aria-hidden="true" tabindex="-1"></a>        (y[is_unsw <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span> is_dash <span class="sc">==</span> <span class="dv">1</span>] <span class="sc">-</span></span>
-<span id="cb114-15"><a href="#cb114-15" aria-hidden="true" tabindex="-1"></a>            y[is_unsw <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span> is_dash <span class="sc">==</span> <span class="dv">0</span>])</span>
-<span id="cb114-16"><a href="#cb114-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a>means <span class="ot">&lt;-</span> panel <span class="sc">|&gt;</span></span>
+<span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(is_unsw, is_dash, is_post) <span class="sc">|&gt;</span></span>
+<span id="cb116-3"><a href="#cb116-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">y =</span> <span class="fu">mean</span>(y)) <span class="sc">|&gt;</span></span>
+<span id="cb116-4"><a href="#cb116-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(is_post)</span>
+<span id="cb116-5"><a href="#cb116-5" aria-hidden="true" tabindex="-1"></a>diffs <span class="ot">&lt;-</span> means <span class="sc">|&gt;</span></span>
+<span id="cb116-6"><a href="#cb116-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(is_unsw, is_dash) <span class="sc">|&gt;</span></span>
+<span id="cb116-7"><a href="#cb116-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">y =</span> <span class="fu">diff</span>(y))</span>
+<span id="cb116-8"><a href="#cb116-8" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(</span>
+<span id="cb116-9"><a href="#cb116-9" aria-hidden="true" tabindex="-1"></a>    diffs,</span>
+<span id="cb116-10"><a href="#cb116-10" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Diff-in-Diff for UNSW</span></span>
+<span id="cb116-11"><a href="#cb116-11" aria-hidden="true" tabindex="-1"></a>    y[is_unsw <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> is_dash <span class="sc">==</span> <span class="dv">1</span>] <span class="sc">-</span></span>
+<span id="cb116-12"><a href="#cb116-12" aria-hidden="true" tabindex="-1"></a>        y[is_unsw <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> is_dash <span class="sc">==</span> <span class="dv">0</span>] <span class="sc">-</span></span>
+<span id="cb116-13"><a href="#cb116-13" aria-hidden="true" tabindex="-1"></a>        <span class="do">## Counterfactual Diff-in-Diff for WU</span></span>
+<span id="cb116-14"><a href="#cb116-14" aria-hidden="true" tabindex="-1"></a>        (y[is_unsw <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span> is_dash <span class="sc">==</span> <span class="dv">1</span>] <span class="sc">-</span></span>
+<span id="cb116-15"><a href="#cb116-15" aria-hidden="true" tabindex="-1"></a>            y[is_unsw <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span> is_dash <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb116-16"><a href="#cb116-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3.997019</code></pre>
@@ -6842,21 +6916,22 @@ Estimation Method:  Doubly Robust</code></pre>
 </section>
 <section id="bayesian-structural-time-series-approach" class="level1">
 <h1>Bayesian structural time-series approach</h1>
-<div class="cell" data-hash="index_cache/html/unnamed-chunk-53_b1a62cb9877cb8940416e9d835ee7d47">
+<p>Estimation of a Bayesian structural time-series model using the <code>CausalImpact</code> package <span class="citation" data-cites="pkg_causalimpact">(<a href="#ref-pkg_causalimpact" role="doc-biblioref">Brodersen et al. 2014</a>)</span>. This method uses a predicted value, based on comparable time series and systematic components of the treated unit as the counterfactual post-treatment.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-54_15829911913285172014cfcb8760f813">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(CausalImpact) <span class="co"># https://google.github.io/CausalImpact/CausalImpact.html</span></span>
-<span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb116-3"><a href="#cb116-3" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
-<span id="cb116-4"><a href="#cb116-4" aria-hidden="true" tabindex="-1"></a>ci_data <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"https://raw.githubusercontent.com/WU-RDS/RMA2022/main/data/ci_data.csv"</span>)</span>
-<span id="cb116-5"><a href="#cb116-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb116-6"><a href="#cb116-6" aria-hidden="true" tabindex="-1"></a><span class="co"># data preparation</span></span>
-<span id="cb116-7"><a href="#cb116-7" aria-hidden="true" tabindex="-1"></a><span class="co"># control songs</span></span>
-<span id="cb116-8"><a href="#cb116-8" aria-hidden="true" tabindex="-1"></a>ctrl_data <span class="ot">&lt;-</span> ci_data <span class="sc">%&gt;%</span></span>
-<span id="cb116-9"><a href="#cb116-9" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(treated <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb116-10"><a href="#cb116-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.data.frame</span>()</span>
-<span id="cb116-11"><a href="#cb116-11" aria-hidden="true" tabindex="-1"></a>ctrl_data_wide <span class="ot">&lt;-</span> <span class="fu">spread</span>(ctrl_data[, <span class="sc">-</span><span class="dv">4</span>], song_id, streams)</span>
-<span id="cb116-12"><a href="#cb116-12" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ctrl_data_wide)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(CausalImpact) <span class="co"># https://google.github.io/CausalImpact/CausalImpact.html</span></span>
+<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb118-3"><a href="#cb118-3" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
+<span id="cb118-4"><a href="#cb118-4" aria-hidden="true" tabindex="-1"></a>ci_data <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"https://raw.githubusercontent.com/WU-RDS/RMA2022/main/data/ci_data.csv"</span>)</span>
+<span id="cb118-5"><a href="#cb118-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb118-6"><a href="#cb118-6" aria-hidden="true" tabindex="-1"></a><span class="co"># data preparation</span></span>
+<span id="cb118-7"><a href="#cb118-7" aria-hidden="true" tabindex="-1"></a><span class="co"># control songs</span></span>
+<span id="cb118-8"><a href="#cb118-8" aria-hidden="true" tabindex="-1"></a>ctrl_data <span class="ot">&lt;-</span> ci_data <span class="sc">%&gt;%</span></span>
+<span id="cb118-9"><a href="#cb118-9" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(treated <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb118-10"><a href="#cb118-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.data.frame</span>()</span>
+<span id="cb118-11"><a href="#cb118-11" aria-hidden="true" tabindex="-1"></a>ctrl_data_wide <span class="ot">&lt;-</span> <span class="fu">spread</span>(ctrl_data[, <span class="sc">-</span><span class="dv">4</span>], song_id, streams)</span>
+<span id="cb118-12"><a href="#cb118-12" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ctrl_data_wide)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 
@@ -6867,45 +6942,48 @@ Estimation Method:  Doubly Robust</code></pre>
 </div>
 </div>
 </div>
-<div class="cell" data-hash="index_cache/html/unnamed-chunk-54_5e701195a1b6197347f13a3889a1069d">
+<p><strong>Visualization of the time series</strong></p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-55_421603468d49b2be62ccad7139e64b50">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> ctrl_data_wide[, <span class="sc">-</span><span class="dv">1</span>]</span>
-<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a><span class="co"># treated song</span></span>
-<span id="cb117-3"><a href="#cb117-3" aria-hidden="true" tabindex="-1"></a>treated_data <span class="ot">&lt;-</span> ci_data <span class="sc">%&gt;%</span></span>
-<span id="cb117-4"><a href="#cb117-4" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(treated <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb117-5"><a href="#cb117-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.data.frame</span>()</span>
-<span id="cb117-6"><a href="#cb117-6" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> treated_data[, <span class="dv">3</span>]</span>
-<span id="cb117-7"><a href="#cb117-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb117-8"><a href="#cb117-8" aria-hidden="true" tabindex="-1"></a><span class="co"># run CI model</span></span>
-<span id="cb117-9"><a href="#cb117-9" aria-hidden="true" tabindex="-1"></a><span class="co"># create dataframe</span></span>
-<span id="cb117-10"><a href="#cb117-10" aria-hidden="true" tabindex="-1"></a>data_ci <span class="ot">&lt;-</span> <span class="fu">cbind</span>(y, x)</span>
-<span id="cb117-11"><a href="#cb117-11" aria-hidden="true" tabindex="-1"></a><span class="co"># visualize time series</span></span>
-<span id="cb117-12"><a href="#cb117-12" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(data_ci, <span class="at">type =</span> <span class="st">"l"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-54-1.png" class="img-fluid" width="768"></p>
-</div>
-</div>
-<div class="cell" data-hash="index_cache/html/unnamed-chunk-55_de16872c8d3138eb962801c792b3f854">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="co"># specify number of pre and post periods</span></span>
-<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a>pre_period <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">38</span>)</span>
-<span id="cb118-3"><a href="#cb118-3" aria-hidden="true" tabindex="-1"></a>post_period <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">38</span> <span class="sc">+</span> <span class="dv">1</span>, <span class="dv">77</span>)</span>
-<span id="cb118-4"><a href="#cb118-4" aria-hidden="true" tabindex="-1"></a><span class="co"># run model</span></span>
-<span id="cb118-5"><a href="#cb118-5" aria-hidden="true" tabindex="-1"></a>ci_m1 <span class="ot">&lt;-</span> <span class="fu">CausalImpact</span>(data_ci, pre_period, post_period)</span>
-<span id="cb118-6"><a href="#cb118-6" aria-hidden="true" tabindex="-1"></a><span class="co"># result summary</span></span>
-<span id="cb118-7"><a href="#cb118-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ci_m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> ctrl_data_wide[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb119-2"><a href="#cb119-2" aria-hidden="true" tabindex="-1"></a><span class="co"># treated song</span></span>
+<span id="cb119-3"><a href="#cb119-3" aria-hidden="true" tabindex="-1"></a>treated_data <span class="ot">&lt;-</span> ci_data <span class="sc">%&gt;%</span></span>
+<span id="cb119-4"><a href="#cb119-4" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(treated <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb119-5"><a href="#cb119-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.data.frame</span>()</span>
+<span id="cb119-6"><a href="#cb119-6" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> treated_data[, <span class="dv">3</span>]</span>
+<span id="cb119-7"><a href="#cb119-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb119-8"><a href="#cb119-8" aria-hidden="true" tabindex="-1"></a><span class="co"># run CI model</span></span>
+<span id="cb119-9"><a href="#cb119-9" aria-hidden="true" tabindex="-1"></a><span class="co"># create dataframe</span></span>
+<span id="cb119-10"><a href="#cb119-10" aria-hidden="true" tabindex="-1"></a>data_ci <span class="ot">&lt;-</span> <span class="fu">cbind</span>(y, x)</span>
+<span id="cb119-11"><a href="#cb119-11" aria-hidden="true" tabindex="-1"></a><span class="co"># visualize time series</span></span>
+<span id="cb119-12"><a href="#cb119-12" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(data_ci, <span class="at">type =</span> <span class="st">"l"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/unnamed-chunk-55-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
-<div class="cell" data-hash="index_cache/html/unnamed-chunk-56_6b4040db8e0ebfd0e6b91cc15d857793">
+<p><strong>Estimation of the model and visualization of the results</strong></p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-56_6741083916d43800c0f84788ab8a9052">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ci_m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="co"># specify number of pre and post periods</span></span>
+<span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a>pre_period <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">38</span>)</span>
+<span id="cb120-3"><a href="#cb120-3" aria-hidden="true" tabindex="-1"></a>post_period <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">38</span> <span class="sc">+</span> <span class="dv">1</span>, <span class="dv">77</span>)</span>
+<span id="cb120-4"><a href="#cb120-4" aria-hidden="true" tabindex="-1"></a><span class="co"># run model</span></span>
+<span id="cb120-5"><a href="#cb120-5" aria-hidden="true" tabindex="-1"></a>ci_m1 <span class="ot">&lt;-</span> <span class="fu">CausalImpact</span>(data_ci, pre_period, post_period)</span>
+<span id="cb120-6"><a href="#cb120-6" aria-hidden="true" tabindex="-1"></a><span class="co"># result summary</span></span>
+<span id="cb120-7"><a href="#cb120-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ci_m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-56-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p><strong>Summaries of the results</strong></p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-57_5f13ba466c25bbb1d206ae6b7eff8718">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ci_m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Posterior inference {CausalImpact}
@@ -6928,7 +7006,7 @@ For more details, type: summary(impact, "report")</code></pre>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ci_m1, <span class="st">"report"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ci_m1, <span class="st">"report"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis report {CausalImpact}
@@ -6945,24 +7023,48 @@ This means that the positive effect observed during the intervention period is s
 The probability of obtaining this effect by chance is very small (Bayesian one-sided tail-area probability p = 0.001). This means the causal effect can be considered statistically significant. </code></pre>
 </div>
 </div>
-<div class="cell" data-hash="index_cache/html/unnamed-chunk-57_738962a36aadf6c035d991ac96cc3325">
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-58_4108ed9108ffbcc64aecdfff46dbef14">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ci_m1<span class="sc">$</span>model<span class="sc">$</span>bsts.model, <span class="st">"coefficients"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb125"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ci_m1<span class="sc">$</span>model<span class="sc">$</span>bsts.model, <span class="st">"coefficients"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-57-1.png" class="img-fluid" width="768"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-58-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-pkg_synthdid" class="csl-entry" role="doc-biblioentry">
+Arkhangelsky, Dmitry. 2023. <em>Synthdid: Synthetic Difference-in-Difference Estimation</em>. <a href="https://github.com/synth-inference/synthdid">https://github.com/synth-inference/synthdid</a>.
+</div>
+<div id="ref-arkhangelskySyntheticDifferenceinDifferences2021" class="csl-entry" role="doc-biblioentry">
+Arkhangelsky, Dmitry, Susan Athey, David A. Hirshberg, Guido W. Imbens, and Stefan Wager. 2021. <span>“Synthetic <span class="nocase">Difference-in-Differences</span>.”</span> <em>American Economic Review</em> 111 (12): 4088–118. <a href="https://doi.org/10.1257/aer.20190159">https://doi.org/10.1257/aer.20190159</a>.
+</div>
+<div id="ref-pkg_fixest" class="csl-entry" role="doc-biblioentry">
+Bergé, Laurent. 2018. <span>“Efficient Estimation of Maximum Likelihood Models with Multiple Fixed-Effects: The <span>R</span> Package <span>FENmlm</span>.”</span> <em>CREA Discussion Papers</em>, no. 13.
+</div>
+<div id="ref-pkg_causalimpact" class="csl-entry" role="doc-biblioentry">
+Brodersen, Kay H., Fabian Gallusser, Jim Koehler, Nicolas Remy, and Steven L. Scott. 2014. <span>“Inferring Causal Impact Using <span>B</span>ayesian Structural Time-Series Models.”</span> <em>Annals of Applied Statistics</em> 9: 247–74. <a href="https://research.google/pubs/pub41854/">https://research.google/pubs/pub41854/</a>.
+</div>
 <div id="ref-pkg_did" class="csl-entry" role="doc-biblioentry">
-Callaway, Brantly, and Pedro H. C. Sant’Anna. 2021. <span>“Did: Difference in Differences.”</span> <a href="https://bcallaway11.github.io/did/">https://bcallaway11.github.io/did/</a>.
+Callaway, Brantly, and Pedro H. C. Sant’Anna. 2021a. <span>“Did: Difference in Differences.”</span> <a href="https://bcallaway11.github.io/did/">https://bcallaway11.github.io/did/</a>.
+</div>
+<div id="ref-callawayDifferenceinDifferencesMultipleTime2021" class="csl-entry" role="doc-biblioentry">
+———. 2021b. <span>“Difference-in-<span>Differences</span> with Multiple Time Periods.”</span> <em>Journal of Econometrics</em>, Themed <span>Issue</span>: <span>Treatment Effect</span> 1, 225 (2): 200–230. <a href="https://doi.org/10.1016/j.jeconom.2020.12.001">https://doi.org/10.1016/j.jeconom.2020.12.001</a>.
+</div>
+<div id="ref-r_r" class="csl-entry" role="doc-biblioentry">
+R Core Team. 2022. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/">https://www.R-project.org/</a>.
 </div>
 <div id="ref-rambachanMoreCredibleApproach2023" class="csl-entry" role="doc-biblioentry">
 Rambachan, Ashesh, and Jonathan Roth. 2023. <span>“A <span>More Credible Approach</span> to <span>Parallel Trends</span>.”</span> <em>The Review of Economic Studies</em>, February, rdad018. <a href="https://doi.org/10.1093/restud/rdad018">https://doi.org/10.1093/restud/rdad018</a>.
+</div>
+<div id="ref-sunEstimatingDynamicTreatment2020" class="csl-entry" role="doc-biblioentry">
+Sun, Liyang, and Sarah Abraham. 2020. <span>“Estimating Dynamic Treatment Effects in Event Studies with Heterogeneous Treatment Effects.”</span> <em>Journal of Econometrics</em>, December. <a href="https://doi.org/10.1016/j.jeconom.2020.09.006">https://doi.org/10.1016/j.jeconom.2020.09.006</a>.
+</div>
+<div id="ref-pkg_gsynth" class="csl-entry" role="doc-biblioentry">
+Xu, Yiqing, and Licheng Liu. 2021. <em>Gsynth: Generalized Synthetic Control Method</em>. <a href="https://yiqingxu.org/packages/gsynth/">https://yiqingxu.org/packages/gsynth/</a>.
 </div>
 </div></section></div></main>
 <!-- /main column -->
